@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<!--main content start-->
+<section id="main-content">
+    <section class="wrapper">
+      <div class="row">
+        <div class="col-lg-12 main-chart">
+            <div class="border-head">
+                <center><h3>Mis documentos</h3></center>
+            </div>
+
+            <center> <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Subir documento</button></center><br><br>
+        </div>
+
+        <div class="row">
+          <div style="background-color:#0080005e; margin-left: 15px;" class="col col-md-6">
+            <h1>Enviados</h1>
+          </div>
+
+          <div style="background-color:#d5e83694; margin-right: -50px;" class="col col-md-6">
+            <h1>Recibidos</h1>
+          </div>
+        </div><br><br>
+      </div>
+
+      
+      <div class="row">
+        <!-- INCIA TABLA PARA DOCUMENTOS ENVIADOS -->
+        <div class="col-sm-5 col-md-6">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Titulo</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Documento</th>
+                <th scope="col">Fecha de creación</th>
+                <th scope="col">Opciones</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              {% for doc in documentos_enviados %}
+              <tr>
+                <td>{{doc.documento.titulo}}</td>
+                <td>{{doc.documento.descripcion}}</td>
+                <td>{{doc.documento.documento}}</td>
+                <td>{{doc.documento.fecha_creacion}}</td>
+                <td>
+                  <form role="form" action="/eliminar_documento_enviado/" method="POST">
+                    {% csrf_token %}
+                    <input style="display: none;" value="{{doc.documento.id}}" name="deletedocumentoenviado">
+                  <!-- <button text="Hola" type="button" class="btn btn-primary"><i class="material-icons">create</i></button> -->
+                  <button type="submit" class="btn btn-danger "><i class="material-icons">delete_sweep</i></button>
+                </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div> 
+        <!-- TERMINA TABLA PARA DOCUMENTOS ENVIADOS -->
+
+        <!-- INCIA TABLA PARA DOCUMENTOS Recibidos -->
+        <div class="col-sm-5 col-md-6">
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Titulo</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Documento</th>
+                <th scope="col">Fecha de creación</th>
+                <th scope="col">Opciones</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              {% for doc in documentos_recibidos %}
+              <tr>
+                <td>{{doc.documento.titulo}}</td>
+        
+                <td>{{doc.documento.documento}}</td>
+                
+                <td>{{doc.documento.descripcion}}</td>
+                
+                <td>{{doc.documento.fecha_creacion}}</td>
+                <td>
+                    <a href="{{doc.documento.documento.url}}" download="" type="button" class="btn btn-primary"> <i class="material-icons">archive</i></a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <!-- TERMINA TABLA PARA DOCUMENTOS RECIBIDOS -->
+        
+      </div>
+
+      
+    </section>
+  </section>
+
+
+<!-- CONSTRUCCIONS DE MODAL PARA SUBIR ARCHIVOS -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+            <h4 class="modal-title titulo_modal" id="myLargeModalLabel">Subir documento</h4>
+         
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+      </div>
+
+      <div id="datos_modal" class="modal-body">
+
+       
+        <form role="form" action="/subir_documentos_enviados/" method="POST">
+          {% csrf_token %}
+          <input style="display: none;" type="text" class="form-control"  value="{{user}}" name="usuario">
+
+          <div class="form-group">
+            <label for="ejemplo_email_1">Titulo</label>
+            <input type="text" class="form-control" placeholder="Título del comunicado" name="titulo">
+          </div>
+          <div class="form-group">
+            <label for="ejemplo_email_1">Descripción</label>
+            <textarea type="text" class="form-control" placeholder="Descripción" name="descripcion"></textarea>
+          </div>
+
+          <!-- <div class="form-group">
+            <label for="ejemplo_email_1">Link</label>
+            <input type="text" class="form-control" placeholder="Link" name="link">
+          </div> -->
+  
+          <!-- <div class="form-group">
+            <label for="ejemplo_email_1">Imagen</label>
+            <input type="file" name="imagen">
+          </div> -->
+
+          <div class="form-group">
+            <label for="ejemplo_email_1">Documento</label>
+            <input type="file" name="documento">
+          </div>
+
+          <!-- <div class="form-group">
+            <label for="ejemplo_email_1">Enviar a: </label> <br>
+              <input name="usuario" value="Secretaria" type="checkbox" class="form-check-input">  Secretaria <br>
+              <input name="usuario" value="Docentes" type="checkbox" class="form-check-input">  Docentes <br>
+              <input name="usuario" value="Jefactura de Docencia" type="checkbox" class="form-check-input">  Jefactura de Docencia <br>
+              <input name="usuario" value="Jefactura Investigacion" type="checkbox" class="form-check-input">  Jefactura Investigacion <br>
+              <input name="usuario" value="Jefactura Laboratorio" type="checkbox" class="form-check-input">  Jefactura Laboratorio <br>
+              <input name="usuario" value="Jefactura Vinculacion" type="checkbox" class="form-check-input">  Jefactura Vinculacion <br>
+          </div> -->
+         
+          <button type="submit" class="btn btn-primary">Subir</button>
+        </form>
+
+       
+      </div>
+
+    </div>
+  </div>
+ </div> 
+ <!--Aqui termina el modal -->
+
+ 
+
+{% endblock %}
