@@ -22,6 +22,7 @@ def iniciosesion(request):
     username = request.POST.get("usuario")
     password = request.POST.get("password")
     print("Esto llego: ", username)
+    
     try: 
         username = authenticate(request, username=username, password=password)
         login(request,username)
@@ -37,6 +38,7 @@ def cerrarsesion(request):
 #index
 def index(request):
     usuario = request.user
+    print("usuario logeado: ", usuario)
     if usuario.is_active:
         usuarios = Usuarios.objects.get(usuario=usuario)
 
@@ -156,6 +158,7 @@ def documentos(request):
 
     documentos_recibidos = Mi_documento.objects.filter(usuario__tipo= usuarios.tipo)
     documentos_enviados = Mi_documento_enviado.objects.filter(usuario__tipo= usuarios.tipo)
+    print("Enviando objetos: ", documentos_enviados)
 
     datos = {"usuario":usuarios,"documentos_recibidos":documentos_recibidos, "documentos_enviados":documentos_enviados}
 
