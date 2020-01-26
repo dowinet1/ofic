@@ -29,5 +29,8 @@ urlpatterns = [
     path('usuarios/', views.usuarios),
     path('crear_usuario/', views.crear_usuario),
     path('eliminar_usuario/', views.eliminar_usuario),
-    
+    path('eliminar_usuario/', views.eliminar_usuario),
+    path('reset_pass/', views.reset_pass),
+    re_path('restablecerpass/(?P<usuario>[\w.@+-]+)/', views.restablecerpass),
+    path('new_pass/', views.new_pass),
 ]

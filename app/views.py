@@ -167,6 +167,7 @@ def documentos(request):
 #vista para control de subir comunicados
 def subir_comunicados(request):
     usuarios = request.POST.getlist("usuario")
+    
     titulo = request.POST.get("titulo")
     descripcion = request.POST.get("descripcion")
     documento = request.POST.get("documento")
@@ -299,6 +300,42 @@ def eliminar_usuario(request):
     usuario.delete()
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER','/'))
+
+
+def reset_pass(request):
+    correo = User.objects.filter(email=request.POST.get("correo")).exists()
+    print("si existe el correo")
+    if correo==True:
+        usuario = User.objects.get(email=request.POST.get("correo"))
+        sesion = "Se ha enviado un enlace a su correo para que recupere su contraseña"
+        email = EmailMessage('Recuperar contraseña', 'Para poder ingresar de nuevo  de click en el siguiente enlace\nhttp://localhost:8000/restablecerpass/'+usuario.username+"/",to = [request.POST.get("correo")])
+        #email = EmailMessage('Recuperar contraseña de Tecnodidáctica', 'Para poder ingresar de nuevo a TECNODIDÁCTICA de click en el siguiente enlace\nhttps://wwww.tecnodidactica.com/resetpass/'+usuario.username+"/",to = [request.POST.get("correo")])
+        email.send()
+        a = "Por favor, verifique su bandeja de entrada"
+        data = {"a":a}
+        print("Envio exitoso de correo")
+        
+        return JsonResponse(data)
+
+
+def restablecerpass(request, usuario):
+	return render(request, 'new_pass.html', {'usuario':usuario})
+
+
+def new_pass(request):
+    usuario =  request.POST.get("usuario")
+    contrasena = request.POST.get("newpass")
+    validar_contrasena = request.POST.get("newpassdos")
+    if contrasena == validar_contrasena:
+        mi_usuario = User.objects.get(username = request.POST.get('usuario'))
+        mi_usuario.set_password(contrasena)
+        mi_usuario.save()
+        # resultado = 1
+        # # data = {"resultado":resultado}
+        return HttpResponseRedirect("/")
+    else:
+        return HttpResponseRedirect("/")
+        
 
 
 

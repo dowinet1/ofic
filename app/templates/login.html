@@ -60,15 +60,15 @@
           </div> -->
         </div>
         <!-- Modal -->
-        <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
+        <!-- <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Forgot Password ?</h4>
+                <h4 class="modal-title">¿Olvidaste tu contraseña?</h4>
               </div>
               <div class="modal-body">
-                <p>Enter your e-mail address below to reset your password.</p>
+                <p>Por favor ingresa tu correo electrónico registrado.</p>
                 <input type="text" name="email" placeholder="Email" autocomplete="off" class="form-control placeholder-no-fix">
               </div>
               <div class="modal-footer">
@@ -77,9 +77,33 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <!-- modal -->
       </form>
+      <!-- modal -->
+      <form class="form-login" action="/reset_pass/" method="POST">
+        {% csrf_token %}
+      <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">¿Olvidaste tu contraseña?</h4>
+            </div>
+            <div class="modal-body">
+              <p>Por favor ingresa tu correo electrónico registrado.</p>
+              <input type="text" name="correo" placeholder="Email" autocomplete="off" class="form-control placeholder-no-fix">
+            </div>
+            <div class="modal-footer">
+              <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
+              <button class="btn btn-theme" type="submit">Enviar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+      <!-- modal -->
+
     </div>
   </div>
   <!-- js placed at the end of the document so the pages load faster -->
